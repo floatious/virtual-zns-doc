@@ -246,8 +246,8 @@ After booting your new kernel, create a file named nullblk-zoned.sh containing t
 ```
 #!/bin/bash
 
-if [ $# != 5 ]; then
-        echo "Usage: $0 <sect size (B)> <zone size (MB)> <zone capacity (MB)> <nr conv zones> <nr seq zones>"
+if [ $# != 7 ]; then
+        echo "Usage: $0 <sect size (B)> <zone size (MB)> <zone capacity (MB)> <nr conv zones> <nr seq zones> <max active zones> <max open zones>"
         exit 1
 fi
 
@@ -263,6 +263,8 @@ function create_zoned_nullb()
         local zc=$3
         local nr_conv=$4
         local nr_seq=$5
+        local max_active_zones=$6
+        local max_open_zones=$7
 
         cap=$(( zs * (nr_conv + nr_seq) ))
 
@@ -288,6 +290,8 @@ function create_zoned_nullb()
         echo $zs > "$dev"/zone_size
         echo $zc > "$dev"/zone_capacity
         echo $nr_conv > "$dev"/zone_nr_conv
+        echo $max_active_zones > "$dev"/zone_max_active
+        echo $max_open_zones > "$dev"/zone_max_open
 
         echo 1 > "$dev"/power
 
@@ -296,15 +300,15 @@ function create_zoned_nullb()
         echo "$nid"
 }
 
-nulldev=$(create_zoned_nullb $1 $2 $3 $4 $5)
+nulldev=$(create_zoned_nullb $1 $2 $3 $4 $5 $6 $7)
 echo "Created /dev/nullb$nulldev"
 ```
 
 Make the script executable and run it like this to create a 4 GB zoned block device with 512 B sector size,
-128 MB zone size, 124 MB zone capacity, and 32 sequential zones:
+128 MB zone size, 124 MB zone capacity, 32 sequential zones, 12 max active zones, and 12 max open zones:
 ```
 chmod +x nullblk-zoned.sh
-sudo ./nullblk-zoned.sh 512 128 124 0 32
+sudo ./nullblk-zoned.sh 512 128 124 0 32 12 12
 ```
 
 You should now have a /dev/nullb0 device.

@@ -91,7 +91,7 @@ users:
 EOF
 ```
 
->Generate the binary file user-data.img using:
+Generate the binary file user-data.img using:
 ```
 cloud-localds user-data.img user-data
 ```

@@ -382,7 +382,7 @@ sudo make install
 
 You can now run e.g.: (If running on null_blk use: /dev/nullb0 instead of /dev/nvme0n1)
 ```
-sudo fio --name=test --filename=/dev/nvme0n1 --zonemode=zbd --direct=1 --runtime=5 --ioengine=io_uring --hipri --rw=randwrite --iodepth=4 --bs=16K
+sudo fio --name=test --filename=/dev/nvme0n1 --zonemode=zbd --direct=1 --runtime=5 --ioengine=io_uring --hipri --rw=randwrite --iodepth=1 --bs=16K
 ```
 
 You can use gzbd-viewer to see how fio will actually write the data.

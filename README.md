@@ -15,9 +15,8 @@ mkdir ~/src
 Clone and build QEMU:
 ```
 cd ~/src
-git clone git://git.infradead.org/qemu-nvme.git
+git clone https://github.com/qemu/qemu.git
 cd qemu
-git checkout nvme-next
 ./configure --target-list=x86_64-softmmu
 make -j$(nproc --all)
 ```

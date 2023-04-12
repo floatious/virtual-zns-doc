@@ -391,9 +391,10 @@ Clone and build RocksDB:
 ```
 sudo apt install libgflags-dev libsnappy-dev
 cd ~/src
-git clone https://github.com/westerndigitalcorporation/rocksdb.git
+git clone https://github.com/facebook/rocksdb.git
 cd rocksdb
-make -j$(nproc --all) db_bench zenfs
+git clone https://github.com/westerndigitalcorporation/zenfs.git plugin/zenfs
+ROCKSDB_PLUGINS=zenfs make -j$(nproc --all) db_bench
 ```
 
 To test RocksDB, create a file named run_zenfs.sh, in ~/src/rocksdb, containing the following:
@@ -417,7 +418,7 @@ MAX_BACKGROUND_COMPACTIONS=8
 OPEN_FILES=16
 
 echo deadline > /sys/class/block/$DEV/queue/scheduler
-./zenfs mkfs --zbd=$DEV --aux_path=/tmp/zenfs_$DEV --finish_threshold=0 --force
+./plugin/zenfs/util/zenfs mkfs --zbd=$DEV --aux_path=/tmp/zenfs_$DEV --finish_threshold=0 --force
 ./db_bench --fs_uri=zenfs://$DEV --key_size=16 --value_size=800 --target_file_size_base=$TARGET_FZ_BASE \
  --write_buffer_size=$WB_SIZE --max_bytes_for_level_base=$MAX_BYTES_FOR_LEVEL_BASE \
  --max_bytes_for_level_multiplier=4 --use_direct_io_for_flush_and_compaction \

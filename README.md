@@ -419,7 +419,7 @@ OPEN_FILES=16
 
 echo deadline > /sys/class/block/$DEV/queue/scheduler
 ./plugin/zenfs/util/zenfs mkfs --zbd=$DEV --aux_path=/tmp/zenfs_$DEV --finish_threshold=0 --force
-./db_bench --fs_uri=zenfs://$DEV --key_size=16 --value_size=800 --target_file_size_base=$TARGET_FZ_BASE \
+./db_bench --fs_uri=zenfs://dev:$DEV --key_size=16 --value_size=800 --target_file_size_base=$TARGET_FZ_BASE \
  --write_buffer_size=$WB_SIZE --max_bytes_for_level_base=$MAX_BYTES_FOR_LEVEL_BASE \
  --max_bytes_for_level_multiplier=4 --use_direct_io_for_flush_and_compaction \
  --num=1500000 --benchmarks=fillrandom,overwrite --max_background_jobs=$MAX_BACKGROUND_JOBS \

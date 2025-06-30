@@ -121,9 +121,9 @@ if [ ! -f $ZNS_DATA ]; then
 fi
 
 $QEMU_BINARY -d guest_errors -m $RAM -smp $CPU_CORES -s -drive file=$ROOTFS_DATA,format=qcow2 -drive file=$USER_DATA,format=raw \
-             -device nvme,id=nvme0,serial=deadbeef,logical_block_size=4096,physical_block_size=4096 \
+             -device nvme,id=nvme0,serial=deadbeef \
              -drive file=$ZNS_DATA,id=mynvme,format=raw,if=none \
-             -device nvme-ns,drive=mynvme,bus=nvme0,nsid=1,zoned=true,zoned.zone_size=$ZONE_SIZE,zoned.zone_capacity=$ZONE_CAP,zoned.max_open=$MAX_OPEN_ZONES,zoned.max_active=$MAX_ACTIVE_ZONES \
+             -device nvme-ns,drive=mynvme,bus=nvme0,nsid=1,zoned=true,zoned.zone_size=$ZONE_SIZE,zoned.zone_capacity=$ZONE_CAP,zoned.max_open=$MAX_OPEN_ZONES,zoned.max_active=$MAX_ACTIVE_ZONES,logical_block_size=4096,physical_block_size=4096 \
              -serial stdio -cpu host -vga none -serial pty -nographic -enable-kvm \
              -chardev socket,id=qmp,path=/tmp/test.qmp,server,nowait -mon chardev=qmp,mode=control \
              -netdev user,id=n1,ipv6=off,hostfwd=tcp::$QEMU_GUEST_SSH_FWD_PORT-:22 \

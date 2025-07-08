@@ -116,9 +116,8 @@ QEMU_GUEST_SSH_FWD_PORT=10222
 CPU_CORES=4
 RAM=8G
 
-if [ ! -f $ZNS_DATA ]; then
-  dd if=/dev/zero of=$ZNS_DATA bs=4M count=1K
-fi
+# Always overwrite, since ZNS does not yet support persistence
+dd if=/dev/zero of=$ZNS_DATA bs=4M count=1K
 
 $QEMU_BINARY -d guest_errors -m $RAM -smp $CPU_CORES -s -drive file=$ROOTFS_DATA,format=qcow2 -drive file=$USER_DATA,format=raw \
              -device nvme,id=nvme0,serial=deadbeef \
